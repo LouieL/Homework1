@@ -166,7 +166,7 @@ int main()
             ++wordsFreq[words_all[m]];
     }
     
-    sortMapByValue(wordsFreq, order);
+    sortMapByValue(wordsFreq, order);  // sort by tf
     appearOnce = appearOnceCount(wordsFreq);
     
     
@@ -182,20 +182,24 @@ int main()
     }
     
     
-    unordered_map<string, int>::iterator it_30words=wordAppear.begin();
     for(int i=0; i<30; ++i)
     {
         
         First30words temp;
         temp.word = order[i].first;
         temp.tf = order[i].second;
-        temp.df = it_30words->second;
+        for(unordered_map<string, int>::iterator it_30words=wordAppear.begin(); it_30words!=wordAppear.end(); ++it_30words)
+        {
+            if(it_30words->first == temp.word)
+                temp.df = it_30words->second;
+        }
+        
         temp.idf = log10(totalFiles/temp.df);
         temp.tf_idf = temp.tf * temp.idf;
         temp.possibility = temp.tf / words_all.size();
         
         first30Words.push_back(temp);
-        ++it_30words;
+        
     }
     
     
